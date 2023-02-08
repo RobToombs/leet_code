@@ -42,49 +42,53 @@ fun matrixRotation(matrix: Array<Array<Int>>, r: Int) {
     val width = matrix.get(0).size
     val height = matrix.size
 
-    // Rotate only as many times as needed
-    val numRotationsForFullRotation = (width * 2) + ((height - 2) * 2)
-    val updatedR = r % numRotationsForFullRotation
+    val xe = width - 1
+    val ye = height - 1
 
-    val widthIndex = width - 1
-    val heightIndex = height - 1
-
-    for(i in 1..r) {
-        matrixRotation(matrix, 0, 0, widthIndex, heightIndex)
-    }
+    matrixRotation(matrix, 0, 0, xe, ye, r)
 
     matrix.forEach { println(it.joinToString(separator = " "))}
 }
 
-fun matrixRotation(matrix: Array<Array<Int>>, xs: Int, ys: Int, xe: Int, ye: Int ) {
+fun matrixRotation(matrix: Array<Array<Int>>, xs: Int, ys: Int, xe: Int, ye: Int, r: Int) {
     if(xs < xe && ys < ye) {
-        val topLeft = matrix[ys][xs]
-        val botRight = matrix[ye][xe]
+        // Determine width + height of current rectangle
+        val width = xe - xs + 1
+        val height = ye - ys + 1
 
-        // Shift top row left
-        for (x in xs until xe) {
-            matrix[ys][x] = matrix[ys][x + 1]
+        // Rotate only as many times as needed
+        val numRotationsForFullRotation = (width * 2) + ((height - 2) * 2)
+        val updatedR = r % numRotationsForFullRotation
+
+        for (i in 1..updatedR) {
+            val topLeft = matrix[ys][xs]
+            val botRight = matrix[ye][xe]
+
+            // Shift top row left
+            for (x in xs until xe) {
+                matrix[ys][x] = matrix[ys][x + 1]
+            }
+
+            // Shift bottom row right
+            for (x in xe downTo xs + 1) {
+                matrix[ye][x] = matrix[ye][x - 1]
+            }
+
+            // Shift right column up
+            for (y in ys until ye - 1) {
+                matrix[y][xe] = matrix[y + 1][xe]
+            }
+            // Backfill last right column item
+            matrix[ye - 1][xe] = botRight
+
+            // Shift left column down
+            for (y in ye downTo ys + 2) {
+                matrix[y][xs] = matrix[y - 1][xs]
+            }
+            // Backfill first left column item
+            matrix[ys + 1][xs] = topLeft
         }
 
-        // Shift bottom row right
-        for (x in xe downTo xs + 1) {
-            matrix[ye][x] = matrix[ye][x - 1]
-        }
-
-        // Shift right column up
-        for (y in ys until ye - 1) {
-            matrix[y][xe] = matrix[y + 1][xe]
-        }
-        // Backfill last right column item
-        matrix[ye - 1][xe] = botRight
-
-        // Shift left column down
-        for (y in ye downTo ys + 2) {
-            matrix[y][xs] = matrix[y - 1][xs]
-        }
-        // Backfill first left column item
-        matrix[ys + 1][xs] = topLeft
-
-        matrixRotation(matrix, xs + 1, ys + 1, xe - 1, ye - 1)
+        matrixRotation(matrix, xs + 1, ys + 1, xe - 1, ye - 1, r)
     }
 }
