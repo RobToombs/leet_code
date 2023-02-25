@@ -29,7 +29,7 @@ class ListNode(value: Int) {
     the first node represents the ones position, build up the BigInt
     multiply each 'n' by 10^n before adding it to the sum.
 
-    Ex. [9,1,3,4]
+    Ex. input = [9,1,3,4]
     9 * 10^0 = 9
     1 * 10^1 = 10
     3 * 10^2 = 300
@@ -57,6 +57,13 @@ class ListNode(value: Int) {
         Take the given BitInteger, convert it to a character array, and
         iterate through it backwards (since the head of the ListNode is the
         last digit of the number) building up a new ListNode
+
+        Ex. input = 4319
+        [4,3,1,9]
+        ListNode(9)
+        ListNode(9).next = ListNode(1)
+        ListNode(9).next = ListNode(1).next = ListNode(3)
+        ListNode(9).next = ListNode(1).next = ListNode(3).next = ListNode(4)
          */
         fun toListNode(l: BigInteger): ListNode? {
             var result: ListNode? = null
