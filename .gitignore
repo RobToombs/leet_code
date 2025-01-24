@@ -4,3 +4,4 @@
 .DS_Store
 /kotlin/build/
 /kotlin/.gradle/
+__pycache__
